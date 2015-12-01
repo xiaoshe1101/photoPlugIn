@@ -339,10 +339,15 @@ layer.photos = function(options){
             height: area[1]
         });
         relog.flwidth = area[0] - (options.html ? 300 : 0);
-        if(log.imgarea[0] > relog.flwidth){
-            log.imgs.css({width: relog.flwidth});
-        } else {
-            log.imgs.css({width: log.imgarea[0]});
+        // if(log.imgarea[0] > relog.flwidth){
+        //     log.imgs.css({width: relog.flwidth});
+        // } else {
+        //     log.imgs.css({width: log.imgarea[0]});
+        // }
+        if(log.imgs.outerHeight() < area[1]){
+            log.imgs.css({top: (area[1] - log.imgs.outerHeight())/2,height:log.imgs.outerHeight()});
+        }else{
+            log.imgs.css({height:area[1]})
         }
         if(log.imgs.outerHeight() < area[1]){
             log.imgs.css({top: (area[1] - log.imgs.outerHeight())/2});
@@ -397,14 +402,23 @@ layer.photosPage = function(options){
  * @param imgs
  */
 function callAlbum (imgs,currImg){
+    var realImgs = [];
     imgs.each(function(index, value){
-        if($(this).attr('src')==''){
-            imgs.splice(index,1);
+        if($(value).attr('src')!=''){
+            realImgs.push(value);
         }
     });
-    if(imgs.size()<=0){
-        return false;
-    }
+    imgs = $(realImgs);
+        // console.log(imgs);
+    // if(imgs.size()<=0){
+    //     return false;
+    // }
+
+    // imgs = $(imgs).map(function(key,value){
+    //     if($(value).attr('src')!=''){
+    //         return value;
+    //     }
+    // });
     var index = imgs.index(currImg);
     console.log(index);
     layer.photosPage({
